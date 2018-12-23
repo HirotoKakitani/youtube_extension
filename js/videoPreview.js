@@ -42,18 +42,23 @@ class VideoPreview extends HTMLElement{
         this.titleDisplay = document.createElement('p');
         this.titleDisplay.innerHTML = vidTitleText;        
  
-        //TODO button functionality
-
+        //button functionality
+        this.funcButton = document.createElement('input');
+        this.funcButton.setAttribute('type','button');
+        //this.funcButton.setAttribute('value','Edit');
+        
 
         wrapper.appendChild(this.titleDisplay);
         wrapper.appendChild(this.thumbDisplay);
+        wrapper.appendChild(this.funcButton);
         shadow.appendChild(wrapper);
 
 
     };
 
+    //all attributes need to be added to this list
     static get observedAttributes(){
-        return ['title','img'];
+        return ['title','img','type'];
     };
 
     //TODO need to properly change attribute value 
@@ -69,6 +74,17 @@ class VideoPreview extends HTMLElement{
                 //console.log(`the img url is: ${this.getAttribute('img')}`);
                 this.thumbDisplay.src = newVal;
                 break;
+            case 'type':
+                if (newVal == 'add'){
+                    this.funcButton.setAttribute('value', 'Add');
+                    this.funcButton.setAttribute('onclick', 'addToList()');   
+                }
+                else if (newVal == 'delete'){
+                    this.funcButton.setAttribute('value', 'Delete');
+                    this.funcButton.setAttribute('onclick', 'deleteFromList()');   
+                }
+                break;
         }
     };
 };
+

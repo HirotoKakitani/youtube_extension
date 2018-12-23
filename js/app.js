@@ -14,10 +14,12 @@ function searchVideo(){
     }
     else{
         var xhttp = new XMLHttpRequest();
-        //runs every time readystate changes
+        // populates list with results. Runs every time readystate changes
         xhttp.onreadystatechange=function(){
             //checks if response is ready
             if (xhttp.readyState==4 && xhttp.status==200){
+                //clear existing list
+                document.getElementById("resultsContainer").innerHTML="";
                 //response ready. list videos
                 var jsonResponse = JSON.parse(xhttp.responseText); 
                 var index = 0;
@@ -27,12 +29,14 @@ function searchVideo(){
                     var newElement = document.createElement('video-preview');
                     newElement.setAttribute('title', jsonResponse.items[index].snippet.title);
                     newElement.setAttribute('img', jsonResponse.items[index].snippet.thumbnails.default.url);
-
+                    newElement.setAttribute('type', 'add');
                     document.getElementById('resultsContainer').appendChild(newElement);
                 };
                 return true;
             };
         };
+
+        //search for videos
         var searchTerm = document.getElementById("searchBar").value;
         //set query parameters
         var url = new URL(YOUTUBEURL);
@@ -50,8 +54,14 @@ function searchVideo(){
         xhttp.send();
         console.log("Request sent");
     };
+};
 
 
+function addToList(){
+    //TODO need to figure out how to differentiate between different videos
+    console.log("adding");
+}
 
-
-}; 
+function deleteFromList(){
+    console.log("deleting");
+} 
