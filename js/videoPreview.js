@@ -5,6 +5,7 @@
  *  Attributes: 
  *      img: video thumbnail URL
  *      title: video title
+ *      vidId: video ID
  */
 class VideoPreview extends HTMLElement{
     constructor(){
@@ -42,11 +43,18 @@ class VideoPreview extends HTMLElement{
         this.titleDisplay = document.createElement('p');
         this.titleDisplay.innerHTML = vidTitleText;        
  
+        var vidIdValue;
+        if (this.hasAttribute('vidId')){
+            vidIdValue = this.getAttribute('vidId');
+        }
+        //default value for title
+        else{
+            vidIdValue = "No ID";
+        }
+
         //button functionality
         this.funcButton = document.createElement('input');
         this.funcButton.setAttribute('type','button');
-        //this.funcButton.setAttribute('value','Edit');
-        
 
         wrapper.appendChild(this.titleDisplay);
         wrapper.appendChild(this.thumbDisplay);
@@ -58,26 +66,25 @@ class VideoPreview extends HTMLElement{
 
     //all attributes need to be added to this list
     static get observedAttributes(){
-        return ['title','img','type'];
+        return ['title','img','vidId','type'];
     };
 
-    //TODO need to properly change attribute value 
     attributeChangedCallback(name, oldVal, newVal){
+        //console.log(`changing ${name} from ${oldVal} to ${newVal}`);
         switch(name){
             case 'title':
-                //console.log(`changing ${name} from ${oldVal} to ${newVal}`);
-                //console.log(`the title attribute is: ${this.getAttribute('title')}`);
                 this.titleDisplay.innerHTML = newVal;
                 break;
             case 'img':
-                //console.log(`changing ${name} from ${oldVal} to ${newVal}`);
-                //console.log(`the img url is: ${this.getAttribute('img')}`);
                 this.thumbDisplay.src = newVal;
+                break;
+            case 'vidId':
                 break;
             case 'type':
                 if (newVal == 'add'){
                     this.funcButton.setAttribute('value', 'Add');
-                    this.funcButton.setAttribute('onclick', 'addToList()');   
+                    //this.funcButton.setAttribute('onclick', 'addToList()');
+                    this.funcButton.addEventListener('click',addToList);   
                 }
                 else if (newVal == 'delete'){
                     this.funcButton.setAttribute('value', 'Delete');

@@ -1,5 +1,5 @@
 var numResponses = "10";
-
+var resultList = {};    //dict to store results of search
 customElements.define('video-preview', VideoPreview);
 window.onload = function(){
     console.log("js loaded");
@@ -21,33 +21,43 @@ function searchVideo(){
                 //clear existing list
                 document.getElementById("resultsContainer").innerHTML="";
                 //response ready. list videos
-                var jsonResponse = JSON.parse(xhttp.responseText); 
-                var index = 0;
+                let jsonResponse = JSON.parse(xhttp.responseText); 
+                let index = 0;
+                console.log("-------0");
                 for (index=0;index<numResponses;index++){
                     //console.log(jsonResponse.items[index].snippet.title);
                     //console.log(jsonResponse.items[index].snippet.thumbnails.default.url);
-                    var newElement = document.createElement('video-preview');
-                    newElement.setAttribute('title', jsonResponse.items[index].snippet.title);
-                    newElement.setAttribute('img', jsonResponse.items[index].snippet.thumbnails.default.url);
+                    let vidTitle = jsonResponse.items[index].snippet.title;
+                    let vidImgURL = jsonResponse.items[index].snippet.thumbnails.default.url;
+                    let vidId = jsonResponse.items[index].id.videoId;
+                    let newElement = document.createElement('video-preview');
+                    newElement.setAttribute('title', vidTitle);
+                    newElement.setAttribute('img', vidImgURL);
+                    newElement.setAttribute('vidId', vidId);
                     newElement.setAttribute('type', 'add');
                     document.getElementById('resultsContainer').appendChild(newElement);
+                    //store title, imgURL. use videoID as key
+                    let storedObj = {'vidTitle': vidTitle, 'vidImgURL': vidImgURL};
+                    resultList[vidId]=storedObj;
+
                 };
                 return true;
             };
         };
 
         //search for videos
-        var searchTerm = document.getElementById("searchBar").value;
+        let searchTerm = document.getElementById("searchBar").value;
         //set query parameters
-        var url = new URL(YOUTUBEURL);
-        var query_string = url.search;
-        var search_params = new URLSearchParams(query_string);
+        let url = new URL(YOUTUBEURL);
+        let query_string = url.search;
+        let search_params = new URLSearchParams(query_string);
         search_params.append('part', 'snippet');
+        search_params.append('type', 'video');
         search_params.append('maxResults', numResponses);
         search_params.append('key', APIKEY);
         search_params.append('q', searchTerm);
         url.search = search_params.toString();
-        var new_url = url.toString();
+        let new_url = url.toString();
         console.log(new_url);
 
         xhttp.open("GET", new_url, true);
@@ -57,9 +67,11 @@ function searchVideo(){
 };
 
 
-function addToList(){
-    //TODO need to figure out how to differentiate between different videos
-    console.log("adding");
+function addToList(evt){
+    let vidId = evt.target.getRootNode().host.getAttribute('vidId');
+    console.log(`Adding ${vidId}`); //gets the video-preview element
+    console.log(resultList[vidId]);
+    //TODO save values to storage 
 }
 
 function deleteFromList(){
