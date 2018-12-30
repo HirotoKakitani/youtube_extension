@@ -1,9 +1,16 @@
 var numResponses = "10";
 var resultList = {};    //dict to store results of search
 customElements.define('video-preview', VideoPreview);
+/*
 window.onload = function(){
+    //localStorage.clear();
     console.log("js loaded");
-};
+    var playButton = document.getElementById('playButton');
+    var editButton = document.getElementById('editButton');
+    editButton.addEventListener('click',function(){
+        window.location="edit.html"; 
+    });
+};*/
 
 function searchVideo(){
     console.log("searching");
@@ -69,11 +76,24 @@ function searchVideo(){
 
 function addToList(evt){
     let vidId = evt.target.getRootNode().host.getAttribute('vidId');
+    let vidInfo = resultList[vidId];
     console.log(`Adding ${vidId}`); //gets the video-preview element
-    console.log(resultList[vidId]);
-    //TODO save values to storage 
+    //save values to storage
+    localStorage.setItem(keyPrefix+vidId,JSON.stringify(vidInfo));
+    removeVideoPreviewById(vidId);    
 }
 
-function deleteFromList(){
-    console.log("deleting");
+function deleteFromList(evt){
+    let vidId = evt.target.getRootNode().host.getAttribute('vidId');
+    console.log(`Deleting ${vidId}`); //gets the video-preview element
+    localStorage.removeItem(keyPrefix+vidId);
+    removeVideoPreviewById(vidId);    
 } 
+
+
+function removeVideoPreviewById(id){
+    //gets correct video-preview element and removes it
+    let removeElement = document.querySelectorAll(`video-preview[vidId='${id}']`)[0];
+    console.log(removeElement);
+    removeElement.parentNode.removeChild(removeElement);
+}

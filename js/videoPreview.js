@@ -88,7 +88,7 @@ class VideoPreview extends HTMLElement{
                 }
                 else if (newVal == 'delete'){
                     this.funcButton.setAttribute('value', 'Delete');
-                    this.funcButton.setAttribute('onclick', 'deleteFromList()');   
+                    this.funcButton.addEventListener('click',deleteFromList);   
                 }
                 break;
         }
