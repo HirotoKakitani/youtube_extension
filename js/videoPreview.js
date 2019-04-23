@@ -16,14 +16,10 @@ class VideoPreview extends HTMLElement{
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class','prevWrapper');        
 
-        var imgUrl;
+        //default value for img
+        var imgUrl = '../images/get_started128.png';
         if (this.hasAttribute('img')){
             imgUrl = this.getAttribute('img');
-        }
-
-        //default value for img
-        else{
-            imgUrl = '../images/get_started128.png';
         }
        
         //set video thumbnail image 
@@ -32,24 +28,18 @@ class VideoPreview extends HTMLElement{
         
 
         //set video title display
-        var vidTitleText;
+        var vidTitleText = "No Title";
         if (this.hasAttribute('title')){
             vidTitleText = this.getAttribute('title');
         }
-        //default value for title
-        else{
-            vidTitleText = "No Title";
-        }
+
         this.titleDisplay = document.createElement('p');
         this.titleDisplay.innerHTML = vidTitleText;        
  
-        var vidIdValue;
+        //default value for vidId
+        var vidIdValue = "No ID";
         if (this.hasAttribute('vidId')){
             vidIdValue = this.getAttribute('vidId');
-        }
-        //default value for title
-        else{
-            vidIdValue = "No ID";
         }
 
         //button functionality

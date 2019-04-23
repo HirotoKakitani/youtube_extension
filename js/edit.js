@@ -2,7 +2,7 @@
        
 window.onload = function(){
     let editCont = document.getElementById('editContainer');
-
+    let backButton = document.getElementById('backButton');
     //iterates through all of localStorage
     for (let i = 0; i < localStorage.length; i++){
          
@@ -29,5 +29,8 @@ window.onload = function(){
         else{
             console.log("wrong vale");
         }
-    }    
+    } 
+    backButton.addEventListener('click',function(){
+        window.location="index.html";
+    });
 };

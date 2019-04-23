@@ -1,16 +1,6 @@
 var numResponses = "10";
 var resultList = {};    //dict to store results of search
 customElements.define('video-preview', VideoPreview);
-/*
-window.onload = function(){
-    //localStorage.clear();
-    console.log("js loaded");
-    var playButton = document.getElementById('playButton');
-    var editButton = document.getElementById('editButton');
-    editButton.addEventListener('click',function(){
-        window.location="edit.html"; 
-    });
-};*/
 
 function searchVideo(){
     console.log("searching");
@@ -32,8 +22,6 @@ function searchVideo(){
                 let index = 0;
                 console.log("-------0");
                 for (index=0;index<numResponses;index++){
-                    //console.log(jsonResponse.items[index].snippet.title);
-                    //console.log(jsonResponse.items[index].snippet.thumbnails.default.url);
                     let vidTitle = jsonResponse.items[index].snippet.title;
                     let vidImgURL = jsonResponse.items[index].snippet.thumbnails.default.url;
                     let vidId = jsonResponse.items[index].id.videoId;
